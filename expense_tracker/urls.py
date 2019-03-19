@@ -23,7 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('authentication.urls')),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    
+    path('',include('tracker.urls')),
 
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
 

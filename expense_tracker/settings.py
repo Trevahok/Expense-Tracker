@@ -25,7 +25,7 @@ SECRET_KEY = 'm0_wc0#!ohauln(_p_1miche*qy_6mw(*rh_)x#a=ao57yw5!-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,9 +41,13 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',
     'ckeditor',
+    'tagulous',
+    'dal',
+    'dal_select2',
 
     'authentication',
     'expense_tracker',
+    'tracker',
 
 ]
 
@@ -113,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 

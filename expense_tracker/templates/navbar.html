@@ -19,34 +19,34 @@
 
 <nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top py-1 ">
     <a class="navbar-brand" href="{% url 'home' %}">
-    Starter Pack
+    Expense Tracker
     </a>
     &nbsp;
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="fa fa-angle-down"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
-        {% comment %} <ul class="navbar-nav mr-auto">
+         <ul class="navbar-nav mr-auto">
              <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    <span class="fa fa-exclamation-triangle"></span>Template
+                    <span class="fa fa-exclamation-triangle"></span>Expense
                 </a>
                 <div class="dropdown-menu">
-                    <a href="{% url '-view'%}" class="dropdown-item">
-                        <span class="fa fa-eye"></span> View Template
+                    <a href="{% url 'view_expense' %}" class="dropdown-item">
+                        <span class="fa fa-eye"></span> View Expenses
                     </a>
-                    <a href="{% url 'template-add'%}" class="dropdown-item">
-                        <span class="fa fa-plus"></span> Add Template
+                    <a href="{% url 'add_expense'%}" class="dropdown-item">
+                        <span class="fa fa-plus"></span> Add Expense
                     </a>
                 </div>
             </li> 
             <li class="nav-item">
-                <a href="{% url 'generate' %}" class="nav-link">
+                <a href="" class="nav-link">
                     <span class="fa fa-lock"></span> Generate
                 </a>
             </li>
          
-        </ul> {% endcomment %}
+        </ul>
         <!--right aligned navbar content-->
         <ul class='navbar-nav my-0 ml-auto'>
             {% if user.is_authenticated %}

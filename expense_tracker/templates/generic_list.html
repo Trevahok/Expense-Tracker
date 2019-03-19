@@ -1,0 +1,39 @@
+{% extends 'base_list.html' %}
+{% load custom_tags %}
+{% block table %}
+<thead>
+{% for field in fields %}
+<th>{{field}}</th>
+{% endfor %}
+<th>Edit</th>
+<th>Delete</th>
+</thead>
+<tbody>
+{% for object in object_list %}
+<tr>
+    {% for field, value in object|get_fields %}
+        {% if field in fields %}
+        <td>{{value}}</td>
+        {% endif %}
+    {% endfor %}
+    <td><a class="btn btn-primary" href="{% url update_url object.pk %}"><span class="fa fa-pen"></span></a></td>
+    <td><button class="btn btn-danger" onclick="deleteObject('{% url delete_url object.pk %}')"><span class="fa fa-trash"></span></button></td>
+</tr>
+{% endfor %}
+</tbody>
+
+<script>
+    function deleteObject(url)
+    {
+        console.log(url);
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function(response)
+            {
+                showModal({'head':'Delete Instance ?','body': response, 'url':url });
+            }
+        });
+    }
+</script>
+{% endblock table %}
