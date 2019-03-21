@@ -6,7 +6,6 @@ from .forms import ExpenseForm
 from .models import Expense
 
 
-
 class ExpenseCreateView(CreateView):
     template_name ='generic_form.html'
     form_class = ExpenseForm
