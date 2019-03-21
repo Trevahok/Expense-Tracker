@@ -8,10 +8,14 @@
 {% regroup object_list by bill_date as object_list %}
 <div class="container-fluid ">
 {% for date, expenses in object_list %}
- <a class="btn btn-outline-secondary mb-1" style='width:100%' data-toggle="collapse" href="#{{date}}" role="button" aria-expanded="false" aria-controls="{{date}}">
+<div class="d-flex justify-content-center">
+ <a class="btn mb-1 border-bottom" style='width:80%;'  data-toggle="collapse" href="#{{date}}" role="button" aria-expanded="false" aria-controls="{{date}}">
 {{date}}
+&nbsp;
+<i class="fas fa-sort-down    "></i>
   </a>
-<div class="row my-3 collapse" id="{{date}}">
+</div>
+<div class="row my-3 collapse p-2" id="{{date}}">
 {% for expense in expenses %}
   <div class="col-sm-4 my-3 col-md-2">
     <div class="card">
