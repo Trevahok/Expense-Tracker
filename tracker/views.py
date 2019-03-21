@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ExpenseForm
 from .models import Expense
 
@@ -33,10 +34,13 @@ class ExpenseDeleteView(DeleteView):
     model = Expense
     success_url = reverse_lazy('view_expense')
 
-class ExpenseListView(ListView):
+class ExpenseListView(LoginRequiredMixin, ListView):
     model = Expense
     template_name = 'expense_list.html'
+    search_fields = ['title', 'description']
     paginate_by = 20 
+    def get_queryset(self):
+        return Expense.objects.filter(user=self.request.user)
 
     # def get_context_data(self, **kwargs):
     #     context = super().get_context_data(**kwargs)

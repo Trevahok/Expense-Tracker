@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'ckeditor',
     'tagulous',
-    'dal',
-    'dal_select2',
+    'extra_views',
 
     'authentication',
     'expense_tracker',
