@@ -1,4 +1,37 @@
-{% extends 'base_list.html' %}
+{% extends 'base.html' %}
+{% load static %}
 
+{% block content %}
+<br>
+<br>
+{% include 'paginator.html' %}
+{% regroup object_list by bill_date as object_list %}
+<div class="container-fluid pl-5">
+{% for date, expenses in object_list %}
+<h1>{{date}}</h1>
+<div class="row my-3">
+{% for expense in expenses %}
+  <div class="col-md-2 my-3">
+    <div class="card">
+    <div class="card-header">{{expense.title}}</div>
+      <div class="card-body">
+        {% if expense.image %}
+        <img  class='card-img-top' src="{{expense.image.url }}" alt="image">
+        {% else %}
+        <div class="text-center">
+        <i class="fas fa-money-bill fa-5x   "></i>
+        </div>
+        {% endif %}
 
-cardd style list here 
+        </h3>
+        <p class="card-text">{{expense.description}}</p>
+      </div>
+      <div class="card-footer">{{expense.cost}}</div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+<br>
+{% endfor %}
+</div>
+{% endblock content %}

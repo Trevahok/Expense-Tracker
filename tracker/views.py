@@ -35,12 +35,13 @@ class ExpenseDeleteView(DeleteView):
 
 class ExpenseListView(ListView):
     model = Expense
-    template_name = 'generic_list.html'
+    template_name = 'expense_list.html'
+    paginate_by = 20 
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        #context['fields'] = [field.name for field in self.model._meta.get_fields()]
-        context['fields'] = ['title','image','cost']
-        context['update_url'] = 'edit_expense'
-        context['delete_url'] = 'delete_expense'
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     #context['fields'] = [field.name for field in self.model._meta.get_fields()]
+    #     context['fields'] = ['title','image','cost']
+    #     context['update_url'] = 'edit_expense'
+    #     context['delete_url'] = 'delete_expense'
+    #     return context

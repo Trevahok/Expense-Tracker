@@ -14,7 +14,10 @@ class Expense(models.Model):
     bill_time = models.TimeField(default=now, verbose_name='Billing Time')
     created = models.DateTimeField(verbose_name='Created Date', auto_now=False, auto_now_add=True)
     modified = models.DateTimeField(verbose_name='Modified Date', auto_now=True, auto_now_add=False)
-    tags = TagField(force_lowercase=True)
+    tags = TagField(blank=True,force_lowercase=True)
+
+    class Meta:
+        ordering = ['-bill_date']
 
     def __str__(self):
         return f'{self.title} {self.cost} {self.bill_date}'
