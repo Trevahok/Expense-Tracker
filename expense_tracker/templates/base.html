@@ -38,6 +38,10 @@
         }
         html, body {
             height: 100%;
+            
+        }
+        body {
+            overflow-y: scroll;
         }
         #container {
             min-height: 93%;
@@ -53,6 +57,20 @@
             text-align: center;
             color: white;
         }
+
+        ::-webkit-scrollbar {
+        width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+        background: rgb(150,150,150); 
+        }
+        ::-webkit-scrollbar-thumb {
+        background: rgb(60,60,60); 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+        background: rgb(100,100,100);  
+        }
+
     </style>
     {% block style %}
     {% endblock style %}
@@ -71,7 +89,7 @@
 </div>
     
 <footer class="bg-dark">
-Bootswatch Lux, baby ! 
+ This app is like your Wife- It remembers everything!
 </footer>
 
 {% block script %}
