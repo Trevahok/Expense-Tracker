@@ -17,33 +17,21 @@
     }
 </style>
 
-<nav class="navbar navbar-expand-md navbar-dark bg-primary sticky-top py-1 ">
-    <a class="navbar-brand" href="{% url 'view_expense' %}">
-    Expense Tracker
+<nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top py-1 ">
+    <a class="navbar-brand mr-auto" href="{% url 'expense' %}">
+        <center>
+        Expense Tracker
+        </center>
     </a>
     &nbsp;
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="fa fa-angle-down"></span>
     </button>
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
-         <ul class="navbar-nav mr-auto">
-             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                    <span class="fa fa-money-bill"></span> Expense
-                </a>
-                <div class="dropdown-menu">
-                    <a href="{% url 'view_expense' %}" class="dropdown-item">
-                        <span class="fa fa-eye"></span> View Expenses
-                    </a>
-                    <a href="{% url 'add_expense'%}" class="dropdown-item">
-                        <span class="fa fa-plus"></span> Add Expense
-                    </a>
-                </div>
-            </li> 
-         
-        </ul>
         <!--right aligned navbar content-->
-        <ul class='navbar-nav my-0 ml-auto'>
+        <ul class='navbar-nav mr-auto'>
+        </ul>
+        <ul class='navbar-nav ml-0'>
             {% if user.is_authenticated %}
             <li class='nav-item dropdown btn'>
                 <a href="#" class="nav-link dropdown-toggle  " id='userdropdown' data-toggle="dropdown">

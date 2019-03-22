@@ -1,12 +1,11 @@
-{% load template_tags %}
-
+{% load crispy_forms_tags %}
 <div class="container-fluid">
         <br>
         <form method="POST" enctype="multipart/form-data" id="modalForm">
             {% csrf_token %}
             {{form|crispy}}
             <div class="btn-group" style="width:100%;">
-                <button class="col btn btn-primary" onclick="hideModal()" type="button">Cancel</button>
+                <button class="col btn btn-primary" onclick="viewDetail()" type="button">Back</button>
                 <button class="col btn btn-danger" onclick="submitData()" type="button">Submit</button>
             </div>
         </form>
@@ -16,7 +15,7 @@
     $(document).ready(function() {
         $("form").attr("action", modalData.url);
     });
-
+    
     function submitData()
     {
         $.ajax({
@@ -26,12 +25,21 @@
             success: function(response) {
                 var el = document.createElement('html');
                 el.innerHTML = response;
-                if (el.getElementsByClassName('alert').length > 0)
+                if (el.getElementsByClassName('is-invalid').length > 0 || el.getElementsByClassName('alert').length > 0)
                     showModal({'body': response, 'url': modalData.url});
                 else
-                    location.reload();
-                console.log(response);                
+                    location.reload();           
             },
         });
     }
+
+    $('select').select2({
+        width:'100%',
+        placeholder: "Type Here..."
+    
+    });
+    $('.datepicker').datepicker({ uiLibrary: 'materialdesign', format: 'yyyy-mm-dd', keyboardNavigation: true, modal: true, header: true, footer: true});
+    $('.timeinput').timepicker({ uiLibrary: 'materialdesign', format: 'hh.mm TT', keyboardNavigation: true, modal: true, header: true, footer: true}); 
+
 </script>
+<!-- {{form.media}} -->

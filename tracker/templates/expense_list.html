@@ -1,105 +1,137 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <br>
-{{form}}
+<div class="container">
+  <div class="collapse" id='add'>
+    <form method="post" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <div class="row">
+    <div class="col-md-5">
+      {{form.title|as_crispy_field}}
+    </div>
+    <div class="col-md-3">
+      {{form.cost|as_crispy_field}}
+    </div>
+    <div class="col-md-2">
+      {{form.image|as_crispy_field}}
+    </div>
+    <div class="col-md-2 pt-3">
+      <button type="submit" class="btn btn-info btn-md">Create</button>
+    </div>
+    </div>
+    </form>
+  </div>
+</div>
 <br>
 {% regroup object_list by bill_date as object_list %}
 <div class="container text-center input-group mb-5">
- <input type="text" placeholder="Type Here ..." id="myInput" onkeyup="myFunction()" class='form-control'>
- <div class="input-group-append">
-    <span class="input-group-text btn btn-primary" onclick="document.getElementById('myInput').value='';$('.collapse').collapse('hide');">X</span>
+  <div class="input-group-prepend">
+    <a class="input-group-text btn btn-success text-success" data-toggle="collapse" href="#add" role="button" aria-expanded="false"
+      aria-controls="add"><i class="fas fa-plus"></i> </a>
+  </div>
+  <input type="text" placeholder="Search Here ..." id="myInput" onkeyup="myFunction()" class='form-control'>
+  <div class="input-group-append">
+    <span class="input-group-text btn btn-danger text-danger"
+      onclick="document.getElementById('myInput').value='';$('.dates').collapse('hide');	$('.dates').collapse('hide'); $('.js-filter').filter(function(){ $(this).show(); })">X</span>
   </div>
 </div>
 
-<div class="container-fluid">
-{% for date, expenses in object_list %}
-<div class="d-flex justify-content-center">
- <a class="btn mb-1 border-bottom" style='width:80%;'  data-toggle="collapse" href="#{{date}}" role="button" aria-expanded="false" aria-controls="{{date}}">
-{{date}}
-&nbsp;
-<i class="fas fa-chevron-down"></i>
-  </a>
-</div>
-<div class="row my-3 collapse p-2 " id="{{date}}">
-{% for expense in expenses %}
-  <div class="col-sm-4 my-3 col-md-2">
-    <div class="card js-filter expense-card" data-url="{% url 'view_expense' expense.pk %}" data-title="{{expense.title}}">
-    <div class="card-header">{{expense.title}}</div>
-      <div class="card-body">
-        {% if expense.image %}
-        <img  class='card-img-top' src="{{expense.image.url}}" alt="image">
-        {% else %}
-        <div class="text-center">
-        <img  class='card-img-top' src="{% static 'money.png'%} " alt="image">
-        </div>
-        {% endif %}
-        </h3>
-        <p class="card-text text-center mt-3">{{expense.description}}</p>
-      </div>
-      <div class="card-footer">{{expense.cost}}</div>
-    </div>
+<div class="container">
+  {% for date, expenses in object_list %}
+  <div class="d-flex justify-content-center">
+    <a class="btn mb-1 border-bottom" style='width:80%;' data-toggle="collapse" href="#{{date}}" role="button"
+      aria-expanded="false" aria-controls="{{date}}">
+      {{date}}
+      &nbsp;
+      <i class="fas fa-chevron-down"></i>
+    </a>
   </div>
-{% endfor %}
-</div>
-<br>
-{% endfor %}
+  <div class="row my-3 collapse p-2 dates" id="{{date}}">
+    {% for expense in expenses %}
+    <div class="col-sm-4 my-3 col-md-2">
+      <div class="card js-filter expense-card" data-url="{% url 'view_expense' expense.pk %}"
+        data-title="{{expense.title}}">
+        <div class="card-header">{{expense.title}}</div>
+        <div class="card-body">
+          {% if expense.image %}
+          <img class='card-img-top' src="{{expense.image.url}}" alt="image">
+          {% else %}
+          <div class="text-center">
+            <img class='card-img-top' src="{% static 'money.png'%} " alt="image">
+          </div>
+          {% endif %}
+          </h3>
+          <p class="card-text text-center mt-3">{{expense.description}}</p>
+        </div>
+        <div class="card-footer">{{expense.cost}}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <br>
+  {% endfor %}
 </div>
 {% endblock content %}
 
 {% block script %}
 <script>
-function myFunction(){
-  $("#myInput").on("change", function() {
-    var value = $(this).val().toLowerCase();
-    if( value == ''){
-      $('.collapse').collapse('hide');
 
-    }
-    $(".js-filter").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
-      $('.collapse').collapse('show');
+	let currentExpense = {
+		url: "",
+		title: "",
+	}
 
-    });
-  });
-};
+	function myFunction() {
+		$("#myInput").on("keyup", function () {
+		var value = $(this).val().toLowerCase();
+		if (value == '') {
+			$('.dates').collapse('hide');
+      $('.js-filter').filter(function(){
+        $(this).show();
+      })
 
-$(".expense-card").on('click', function() {
-	let url = $(this).data("url");
-	let title = $(this).data("title");
-	showModal({'head': title,'body': "<center><div class='spinner-grow text-info spinner-grow-xl'></div></center>"}); //and blue really stands out in a black and white theme so its really good
-	setTimeout(function(){
-		$.ajax({
-		type: 'GET',
-		url: url,
-		success: function(response) {
-			showModal({'head': title,'body': response});
-		},
-		error: function(response) {
-			showModal({'head': title, 'body': 'Error loading response'});
-		},
+		}
+		else{
+		$(".js-filter").filter(function () {
+			$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+			$('.dates').collapse('show');
 		});
-	}, 100);
+
+		}
+		});
+	};
+
+	function viewDetail()
+    {
+        let url = currentExpense.url;
+		let title = currentExpense.title;
+		let timeout = 0;
+		if (modalVisibility)
+		{
+			hideModal();
+			timeout = 400;
+		}
+		setTimeout(function() {
+			showModal({'head': title, 'body': "<center><div class='spinner-grow text-info spinner-grow-xl'></div></center>"});
+			$.ajax({
+				type: 'GET',
+				url: url,
+				success: function (response) { showModal({'head': title,'body': response}); },
+				error: function (response) { showModal({'head': title, 'body': 'Error loading response'}); },
+			});
+		}, timeout);
+		
+	}
 	
-});
+	$(".expense-card").on('click', function () {
+		let url = $(this).data("url");
+		let title = $(this).data("title");
+		currentExpense = {url, title};
+		viewDetail();
+	});
+
 </script>
 {% endblock script %}
-
-{% block style %}
-<style>
-.loader {
-border: 16px solid #f3f3f3; /* Light grey */
-border-top: 16px solid #3498db; /* Blue */
-border-radius: 50%;
-width: 120px;
-height: 120px;
-animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-0% { transform: rotate(0deg); }
-100% { transform: rotate(360deg); }
-}
-</style>
-{% endblock style %}

@@ -4,11 +4,12 @@
         {% csrf_token %}
         <br>
         <div class="jumbotron text-dark">
-            <h5>{{object}}<br></h5>
+            <h5>{{object.title}}<br></h5>
+            <h3>{{object.cost}} </h3>
         </div>
         <br>
         <div class="btn-group" style="width:100%;">
-            <button class="col btn btn-primary" onclick="hideModal()" type="button">Cancel</button>
+            <button class="col btn btn-primary" onclick="viewDetail()" type="button">Cancel</button>
             <button class="col btn btn-danger">Delete</button>
         </div>
     </form>

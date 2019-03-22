@@ -16,10 +16,12 @@
 
 <script>
 
+    let modalVisibility = false;
     let modalData;
 
     function showModal(data)
     {
+        modalVisibility = true;
         modalData = data;
         $("#modal").modal('show');
         $("#modalTitle").html(data.head);
@@ -28,6 +30,7 @@
 
     function hideModal()
     {
+        modalVisibility = false;
         $("#modal").modal('hide');
         $("#modalContent").html("");
     }

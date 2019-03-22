@@ -2,7 +2,7 @@
 {% if expense.image %}
 <img  class='card-img-top' src="{{expense.image.url}}" alt="image">
 {% else %}
-<span class="badge badge-dark mb-2">{{expense.tags}}</span>
+<span class="badge badge-dark mb-3">{{expense.tags}}</span>
 <div class="text-center">
 <img  class='card-img-top' src="{% static 'money.png'%} " alt="image">
 </div>
@@ -19,19 +19,50 @@
 {% endif %}
 </table>
 <div class="btn-group" style="width:100%;">
-    <button class="col btn btn-primary" onclick="editExpense('{% url edit_expense expense.id %}')" type="button">Edit</button>
-    <button class="col btn btn-danger"  onclick="deleteExpense('{% url delete_expense expense.id %}')" type="button">Delete</button>
+    <button class="col btn btn-primary" onclick="editExpense('{% url 'edit_expense' expense.id %}')" type="button">Edit</button>
+    <button class="col btn btn-danger"  onclick="deleteExpense('{% url 'delete_expense' expense.id %}')" type="button">Delete</button>
 </div>
 
 <script>
 
 function editExpense(url){
+
+    hideModal();
+    const timeout = 500;
+
+    setTimeout(function() {
+        showModal({
+        'head': 'Edit Expense',
+        'body': "<center><div class='spinner-grow text-info spinner-grow-xl'></div></center>"
+        });
+        $.ajax({
+            type: 'GET',
+            url: url,
+            success: function(response){
+                showModal({'head': 'Edit Expense', 'body': response, 'url': url});
+            }
+        });
+    }, timeout);
+    
+}
+
+function deleteExpense(url){
+
+    hideModal();
+    const timeout = 500;
+    
+    setTimeout(function() {
+    showModal({
+        'head': 'Edit Expense',
+        'body': "<center><div class='spinner-grow text-info spinner-grow-xl'></div></center>"
+    });
     $.ajax({
         type: 'GET',
         url: url,
         success: function(response){
-            showModal({'head': 'Edit Expense', 'body': response, 'url': url});
+            showModal({'head': 'Delete Expense', 'body': response, 'url': url});
         }
     })
+    }, timeout); 
 }
 </script>
