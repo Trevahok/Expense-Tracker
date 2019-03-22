@@ -51,7 +51,7 @@
   </div>
   <div class="row my-3 collapse p-2 dates" id="{{date}}">
     {% for expense in expenses %}
-    <div class="col-sm-4 my-3 col-md-2">
+    <div class="col-sm-4 my-3 col-md-3">
       <div class="card js-filter expense-card" data-url="{% url 'view_expense' expense.pk %}"
         data-title="{{expense.title}}">
         <div class="card-header">{{expense.title}}</div>
