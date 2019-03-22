@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ExpenseForm
 from .models import Expense
 
 
 class ExpenseCreateView(CreateView):
-    template_name ='generic_form.html'
+    template_name ='expense_list.html'
     form_class = ExpenseForm
     model = Expense
     success_url = reverse_lazy('view_expense')
@@ -17,6 +17,9 @@ class ExpenseCreateView(CreateView):
         initial['user'] = self.request.user.id
         return initial
 
+    def get_context_data(self, **kwargs):
+        kwargs['object_list'] = Expense.objects.filter(user=self.request.user)
+        return super().get_context_data(**kwargs)
     # def form_valid(self, form):
     #     expense = form.save(commit=False)
     #     expense.user = self.request.user
@@ -24,7 +27,7 @@ class ExpenseCreateView(CreateView):
     #     return super().form_valid(form) 
 
 class ExpenseUpdateView(UpdateView):
-    template_name = 'generic_form.html'
+    template_name = 'modal_form.html'
     form_class = ExpenseForm
     model = Expense
 
@@ -48,3 +51,8 @@ class ExpenseListView(LoginRequiredMixin, ListView):
     #     context['update_url'] = 'edit_expense'
     #     context['delete_url'] = 'delete_expense'
     #     return context
+
+class ExpenseDetailView(DetailView):
+    template_name = 'expense_detail.html'
+    model = Expense
+    context_object_name = 'expense'

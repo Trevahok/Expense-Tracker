@@ -1,0 +1,37 @@
+{% load static %}
+{% if expense.image %}
+<img  class='card-img-top' src="{{expense.image.url}}" alt="image">
+{% else %}
+<span class="badge badge-dark mb-2">{{expense.tags}}</span>
+<div class="text-center">
+<img  class='card-img-top' src="{% static 'money.png'%} " alt="image">
+</div>
+{% endif %}
+<hr>
+<table class='table table-striped'>
+<tr>
+    <td>Expenditure: {{expense.cost}}</td><td>{{expense.bill_date}} {{expense.bill_time}}</td>
+</tr>
+{% if expense.description %}
+<tr>
+    <td colspan='2'>{{expense.description}}</td>
+</tr>
+{% endif %}
+</table>
+<div class="btn-group" style="width:100%;">
+    <button class="col btn btn-primary" onclick="editExpense('{% url edit_expense expense.id %}')" type="button">Edit</button>
+    <button class="col btn btn-danger"  onclick="deleteExpense('{% url delete_expense expense.id %}')" type="button">Delete</button>
+</div>
+
+<script>
+
+function editExpense(url){
+    $.ajax({
+        type: 'GET',
+        url: url,
+        success: function(response){
+            showModal({'head': 'Edit Expense', 'body': response, 'url': url});
+        }
+    })
+}
+</script>
