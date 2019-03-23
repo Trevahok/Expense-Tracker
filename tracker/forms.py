@@ -12,3 +12,8 @@ class ExpenseForm(forms.ModelForm):
             'bill_time': forms.TimeInput(format='%H:%M'),
             'description': forms.Textarea(attrs={'rows': 2})
         }
+    
+
+class DateRangeForm(forms.Form):
+    start_date = forms.DateField(required=True)
+    end_date = forms.DateField(required=True)

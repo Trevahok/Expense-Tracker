@@ -52,8 +52,8 @@
   <div class="row my-3 collapse p-2 dates" id="{{date}}">
     {% for expense in expenses %}
     <div class="col-sm-4 my-3 col-md-3">
-      <div class="card js-filter expense-card" data-url="{% url 'view_expense' expense.pk %}"
-        data-title="{{expense.title}}">
+      <div class="card js-filter expense-card shadow-sm rounded" data-url="{% url 'view_expense' expense.pk %}"
+        data-title="{{expense.title}}" style="cursor: pointer;">
         <div class="card-header">{{expense.title}}</div>
         <div class="card-body">
           {% if expense.image %}
@@ -132,5 +132,23 @@
 		viewDetail();
 	});
 
+	function downloadCSV(url)
+	{
+		showModal({
+			'head': 'Download as CSV',
+			'body': "<center><div class='spinner-grow text-info spinner-grow-xl'></div></center>"
+		});
+		$.ajax({
+			type: 'GET',
+			url: url,
+			success: function(response) {
+				showModal({head: 'Download as CSV', body: response, url: url});
+			},
+			error: function(response) {
+				showModal({head: 'Download as CSV', body: 'Error loading response'});
+			}
+		});
+		
+	}
 </script>
 {% endblock script %}

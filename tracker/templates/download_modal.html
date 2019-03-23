@@ -1,0 +1,65 @@
+{% load crispy_forms_tags %}
+<div class="container-fluid">
+        <br>
+        <form method="POST" enctype="multipart/form-data" id="modalForm">
+            {% csrf_token %}
+            {{form|crispy}}
+            <div class="btn-group" style="width:100%;">
+                <button class="col btn btn-primary" onclick="hideModal()" type="button">Back</button>
+                <button class="col btn btn-danger" onclick="submitData()" type="button">Submit</button>
+            </div>
+        </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("form").attr("action", modalData.url);
+
+        $('#id_start_date').datepicker({
+            uiLibrary: 'materialdesign',
+            format: 'yyyy-mm-dd',
+            iconsLibrary: 'fontawesome',
+            keyboardNavigation: true, modal: true, header: true, footer: true,
+            minDate: today,
+            maxDate: function () {
+                return $('#id_end_date').val();
+            }
+        });
+        $('#id_end_date').datepicker({
+            uiLibrary: 'materialdesign',
+            format: 'yyyy-mm-dd',
+            iconsLibrary: 'fontawesome',
+            keyboardNavigation: true, modal: true, header: true, footer: true,
+            minDate: function () {
+                return $('#id_start_date').val();
+            }
+        });
+
+        $('select').select2({
+            width:'100%',
+            placeholder: "Type Here..."
+        });
+    });
+    
+    function submitData()
+    {
+        $.ajax({
+            type: "POST",
+            url: modalData.url,
+            data: $("#modalForm").serialize(),
+            success: function(response) {
+                var el = document.createElement('html');
+                el.innerHTML = response;
+                if (el.getElementsByClassName('is-invalid').length > 0 || el.getElementsByClassName('alert').length > 0)
+                    showModal({'body': response, 'url': modalData.url});
+                else
+                    location.reload();           
+            },
+        });
+    }
+
+   
+
+
+</script>
+<!-- {{form.media}} -->

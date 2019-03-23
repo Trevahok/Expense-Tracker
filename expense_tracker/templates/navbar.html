@@ -28,6 +28,11 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <!--right aligned navbar content-->
         <ul class='navbar-nav mr-auto'>
+            <li class="nav-item">
+                <a onclick="downloadCSV('{% url 'download_expense' %}')" class="nav-link" style="cursor: pointer">
+                    <span class="fa fa-download"></span> Download
+                </a>
+            </li>
         </ul>
         <ul class='navbar-nav ml-0'>
             {% if user.is_authenticated %}
