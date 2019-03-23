@@ -143,12 +143,13 @@
 			url: url,
 			success: function(response) {
 				showModal({head: 'Download as CSV', body: response, url: url});
+				modalOnReady();
 			},
 			error: function(response) {
 				showModal({head: 'Download as CSV', body: 'Error loading response'});
 			}
 		});
 		
-	}
+  }
 </script>
 {% endblock script %}

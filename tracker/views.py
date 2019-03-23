@@ -45,19 +45,26 @@ class ExpenseDeleteView(LoginRequiredMixin,DeleteView):
 
 class DownloadCsv(LoginRequiredMixin, FormView):
     form_class = DateRangeForm
-    template_name = 'modal_form.html'
+    template_name = 'download_modal.html'
+    success_url = 'expense'
 
     def post(self, request, *args, **kwargs):
-        start_date = request.POST['start_date']
-        end_date = request.POST['end_date']
-        out_file = StringIO()
-        qs = Expense.objects.filter(user=request.user, bill_date__range= [start_date, end_date])
-        dump(qs, out_file)
-        out_file.seek(0, 0)
-        print(out_file.getvalue())
-        response = HttpResponse(FileWrapper(out_file), content_type='application/force-download')
-        response['Content-Disposition'] = 'attachment; filename=%s' % smart_str('CSVData.csv')
-        return response  
+        form = DateRangeForm(request.POST)
+
+        if form.is_valid():
+            start_date = request.POST['start_date']
+            end_date = request.POST['end_date']
+            out_file = StringIO()
+            qs = Expense.objects.filter(user=request.user, bill_date__range= [start_date, end_date])
+            if len(qs) > 0:
+                dump(qs, out_file)
+                out_file.seek(0, 0)
+                # print(out_file.getvalue())
+                response = HttpResponse(FileWrapper(out_file), content_type='application/force-download')
+                response['Content-Disposition'] = 'attachment; filename=%s' % smart_str('CSVData.csv')
+                return response
+
+        return super().post(request, *args, **kwargs)
     
 class ExpenseMonthArchiveView(MonthArchiveView):
     date_field = 'bill_date'

@@ -1,7 +1,7 @@
 {% load crispy_forms_tags %}
 <div class="container-fluid">
         <br>
-        <form method="POST" enctype="multipart/form-data" id="modalForm">
+        <form method="POST" enctype="multipart/form-data" id="modalForm" autocomplete="off">
             {% csrf_token %}
             {{form|crispy}}
             <div class="btn-group" style="width:100%;">
@@ -12,21 +12,19 @@
 </div>
 
 <script>
-    $(document).ready(function() {
+    
+    function modalOnReady() {
         $("form").attr("action", modalData.url);
 
         $('#id_start_date').datepicker({
-            uiLibrary: 'materialdesign',
             format: 'yyyy-mm-dd',
             iconsLibrary: 'fontawesome',
             keyboardNavigation: true, modal: true, header: true, footer: true,
-            minDate: today,
             maxDate: function () {
                 return $('#id_end_date').val();
             }
         });
         $('#id_end_date').datepicker({
-            uiLibrary: 'materialdesign',
             format: 'yyyy-mm-dd',
             iconsLibrary: 'fontawesome',
             keyboardNavigation: true, modal: true, header: true, footer: true,
@@ -34,13 +32,8 @@
                 return $('#id_start_date').val();
             }
         });
+    } 
 
-        $('select').select2({
-            width:'100%',
-            placeholder: "Type Here..."
-        });
-    });
-    
     function submitData()
     {
         $.ajax({
@@ -51,15 +44,21 @@
                 var el = document.createElement('html');
                 el.innerHTML = response;
                 if (el.getElementsByClassName('is-invalid').length > 0 || el.getElementsByClassName('alert').length > 0)
+                {
                     showModal({'body': response, 'url': modalData.url});
+                    modalOnReady();
+                }                
                 else
-                    location.reload();           
+                {
+                    $("#modalForm").submit();
+                    hideModal();
+                }             
             },
+            error: function(response) {
+                hideModal();
+                showModal({'body': 'No data in range!', 'url': modalData.url});
+            }
         });
     }
-
-   
-
-
 </script>
 <!-- {{form.media}} -->
